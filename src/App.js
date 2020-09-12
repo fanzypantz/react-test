@@ -9,6 +9,17 @@ function App() {
   const posts = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts").then((res) =>
+      res
+        .json()
+        .then((res) => dispatch(allActions.postActions.addPosts(res)))
+        .catch((err) => {
+          console.log("errors: ", err);
+        })
+    );
+  }, [dispatch]);
+
   const addPost = () => {
     dispatch(
       allActions.postActions.addPost([
@@ -27,7 +38,7 @@ function App() {
   // No need for logic checking if it is empty later
   const listPosts = posts.map((post, index) => (
     <li key={index} onClick={() => removePost(index)}>
-      {post.text}
+      {post.title}
     </li>
   ));
 
